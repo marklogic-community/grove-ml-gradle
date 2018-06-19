@@ -1,0 +1,69 @@
+{
+  "database-name": "%%mlAppName%%-content",
+  "schema-database": "%%mlAppName%%-schemas",
+  "triggers-database": "%%mlAppName%%-triggers",
+
+  "triple-index": true,
+
+  "uri-lexicon": true,
+  "collection-lexicon": true,
+  "directory-creation": "manual",
+  "maintain-last-modified": false,
+
+  "stemmed-searches": "basic",
+  "word-searches": true,
+  "trailing-wildcard-searches": true,
+
+  "range-element-index": [],
+  "range-element-attribute-index": [],
+  "range-field-index": [],
+  "path-namespace": [],
+
+  "range-path-index": [{
+    "scalar-type": "string",
+    "collation": "http://marklogic.com/collation/codepoint",
+    "path-expression": "docFormat",
+    "range-value-positions": false,
+    "invalid-values": "reject"
+  }, {
+    "scalar-type": "string",
+    "collation": "http://marklogic.com/collation/codepoint",
+    "path-expression": "eyeColor",
+    "range-value-positions": false,
+    "invalid-values": "reject"
+  }, {
+    "scalar-type": "string",
+    "collation": "http://marklogic.com/collation/codepoint",
+    "path-expression": "gender",
+    "range-value-positions": false,
+    "invalid-values": "reject"
+  }, {
+    "scalar-type": "unsignedInt",
+    "collation": "",
+    "path-expression": "age",
+    "range-value-positions": false,
+    "invalid-values": "reject"
+  }],
+
+  "geospatial-element-index": [],
+
+  "geospatial-element-pair-index": [{
+    "parent-namespace-uri": "",
+    "parent-localname": "location",
+    "latitude-namespace-uri": "",
+    "latitude-localname": "latitude",
+    "longitude-namespace-uri": "",
+    "longitude-localname": "longitude",
+    "coordinate-system": "wgs84",
+    "range-value-positions": false,
+    "invalid-values": "reject"
+  }],
+
+  "geospatial-element-child-index": [],
+  "element-word-lexicon": [],
+  "element-attribute-word-lexicon": [],
+
+  "phrase-through": [],
+  "phrase-around": [],
+  "element-word-query-through": []
+}
