@@ -57,6 +57,8 @@ task setModulesPermissions(type: com.marklogic.gradle.task.ServerEvalTask) {
 
 mlLoadSchemas.finalizedBy setSchemasPermissions
 mlLoadModules.finalizedBy setModulesPermissions
+mlDeploy.finalizedBy setSchemasPermissions
+mlDeploy.finalizedBy setModulesPermissions
 
 task mlLoadContent(type: com.marklogic.gradle.task.MlcpTask) {
   systemProperty "java.library.path", "mlcp/lib/native"
