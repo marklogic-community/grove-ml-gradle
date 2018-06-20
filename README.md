@@ -12,7 +12,7 @@ The following someware must be pre-installed:
 Also used, but downloaded and installed automatically:
 
 - [MarkLogic Content Pump](https://developer.marklogic.com/products/mlcp) - MarkLogic data import tool (included via Gradle)
-- [Gradle 3.5](https://gradle.org/) - Build tooling for the Java ecosystem (included using gradle-wrapper)
+- [Gradle 4.8](https://gradle.org/) - Build tooling for the Java ecosystem (included using gradle-wrapper)
 - [ml-gradle](https://github.com/marklogic-community/ml-gradle): The actual MarkLogic configuration deploy tool (included via Gradle)
 
 ## Quick Start (for the Impatient)
