@@ -20,12 +20,12 @@ Also used, but downloaded and installed automatically:
 On Mac or Linux:
 
     ./gradlew mlDeploy
-    ./gradlew importSampleData
+    ./gradlew loadSampleData
 
 On Windows:
 
     gradlew.bat mlDeploy
-    gradlew.bat importSampleData
+    gradlew.bat loadSampleData
 
 ## Setting up the target enviroment
 
@@ -52,8 +52,8 @@ will allow you to explore all the features you get out of the box in a better wa
 can load them with (MLCP)[https://docs.marklogic.com/guide/ingestion/content-pump] using
 ml-gradle.
 
-    ./gradlew importSampleData
+    ./gradlew loadSampleData
 
 Or on Windows:
 
-    gradlew.bat importSampleData
+    gradlew.bat loadSampleData
