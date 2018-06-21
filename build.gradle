@@ -8,7 +8,7 @@
 
 plugins {
   id "net.saliman.properties" version "1.4.6"
-  id "com.marklogic.ml-gradle" version "3.6.0"
+  id "com.marklogic.ml-gradle" version "3.7.1"
 }
 
 repositories {
@@ -73,7 +73,7 @@ task mlLoadContent(type: com.marklogic.gradle.task.MlcpTask) {
 
 mlDeploy.finalizedBy mlLoadContent
 
-task importSampleData(type: com.marklogic.gradle.task.MlcpTask) {
+task loadSampleData(type: com.marklogic.gradle.task.MlcpTask) {
   systemProperty "java.library.path", "mlcp/lib/native"
   classpath = configurations.mlcp
   command = "IMPORT"

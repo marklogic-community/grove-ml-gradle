@@ -12,7 +12,7 @@ The following someware must be pre-installed:
 Also used, but downloaded and installed automatically:
 
 - [MarkLogic Content Pump](https://developer.marklogic.com/products/mlcp) - MarkLogic data import tool (included via Gradle)
-- [Gradle 3.5](https://gradle.org/) - Build tooling for the Java ecosystem (included using gradle-wrapper)
+- [Gradle 4.8](https://gradle.org/) - Build tooling for the Java ecosystem (included using gradle-wrapper)
 - [ml-gradle](https://github.com/marklogic-community/ml-gradle): The actual MarkLogic configuration deploy tool (included via Gradle)
 
 ## Quick Start (for the Impatient)
@@ -20,12 +20,12 @@ Also used, but downloaded and installed automatically:
 On Mac or Linux:
 
     ./gradlew mlDeploy
-    ./gradlew importSampleData
+    ./gradlew loadSampleData
 
 On Windows:
 
     gradlew.bat mlDeploy
-    gradlew.bat importSampleData
+    gradlew.bat loadSampleData
 
 ## Setting up the target enviroment
 
@@ -52,8 +52,8 @@ will allow you to explore all the features you get out of the box in a better wa
 can load them with (MLCP)[https://docs.marklogic.com/guide/ingestion/content-pump] using
 ml-gradle.
 
-    ./gradlew importSampleData
+    ./gradlew loadSampleData
 
 Or on Windows:
 
-    gradlew.bat importSampleData
+    gradlew.bat loadSampleData
