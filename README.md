@@ -1,6 +1,6 @@
-# Muir-ml-gradle
+# Grove-ml-gradle
 
-This MUIR app is meant to support configuration of MarkLogic databases, app-servers, users, roles, etc. It also supports deployment of application code, and import of content.
+This Grove app is meant to support configuration of MarkLogic databases, app-servers, users, roles, etc. It also supports deployment of application code, and import of content.
 
 ## System requirements
 
