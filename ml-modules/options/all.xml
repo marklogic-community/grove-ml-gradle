@@ -170,9 +170,11 @@
   </suggestion-source>
   -->
 
-  <!-- This will extract the latitude and longitude from the search. -->
+  <!-- This will extract the person's name from the search.  This path is specific to the person data
+       sample data set.  As of beta release, you may override this by editing the default search route
+       config options used in middle-tier/routes/api/index.js -->
   <extract-document-data selected="include">
-    <extract-path>//location</extract-path>
+    <extract-path>/name</extract-path>
   </extract-document-data>
 
 </options>
