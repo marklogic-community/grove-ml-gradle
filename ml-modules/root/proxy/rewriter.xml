@@ -1,0 +1,173 @@
+<rewriter xmlns="http://marklogic.com/xdmp/rewriter">
+
+  <!-- /api -->
+  <match-path prefix="/api">
+
+    <!-- /api/ping -->
+    <match-path prefix="/api/ping">
+
+      <!-- no further subbranching -->
+      <match-path matches="^/api/ping$">
+
+        <!-- only allow GET -->
+        <match-method any-of="GET">
+          <dispatch>/endpoints/get-ping.sjs</dispatch>
+        </match-method>
+
+        <!-- throw 405 -->
+        <error code="GROVE-METHOD-NOT-ALLOWED" data1="GET"/>
+
+      </match-path>
+
+      <!-- fall through to 404 -->
+
+    </match-path>
+
+    <!-- /api/auth -->
+    <match-path prefix="/api/auth">
+
+      <!-- /api/auth/status -->
+      <match-path matches="^/api/auth/status$">
+
+        <!-- only allow GET -->
+        <match-method any-of="GET">
+
+          <!-- client must accept JSON -->
+          <match-accept any-of="application/json application/* */*">
+
+            <!-- not authenticated -->
+            <match-user default-user="true">
+              <set-query-param name="defaultUser">true</set-query-param>
+              <dispatch include-request-query-params="false">/endpoints/auth/get-status.sjs</dispatch>
+            </match-user>
+
+            <!-- authenticated -->
+            <match-path>
+              <set-query-param name="defaultUser">false</set-query-param>
+              <dispatch include-request-query-params="false">/endpoints/auth/get-status.sjs</dispatch>
+            </match-path>
+
+            <!-- should not be reached! throw 500 -->
+            <error code="GROVE-UNREACHABLE"/>
+          </match-accept>
+
+          <!-- throw 406 -->
+          <error code="GROVE-NOT-ACCEPTABLE" data1="application/json" data2="application/*" data3="*/*"/>
+        </match-method>
+
+        <!-- throw 405 -->
+        <error code="GROVE-METHOD-NOT-ALLOWED" data1="GET"/>
+      </match-path>
+
+      <!-- /api/auth/login -->
+      <match-path matches="^/api/auth/login$">
+
+        <!-- only allow POST -->
+        <match-method any-of="POST">
+
+          <!-- client must send JSON -->
+          <match-content-type any-of="application/json">
+
+            <!-- client must accept JSON -->
+            <match-accept any-of="application/json application/* */*">
+              <dispatch>/endpoints/auth/post-login.sjs</dispatch>
+            </match-accept>
+
+            <!-- throw 406 -->
+            <error code="GROVE-NOT-ACCEPTABLE" data1="application/json" data2="application/*" data3="*/*"/>
+          </match-content-type>
+
+          <!-- throw 415 -->
+          <error code="GROVE-UNSUPPORTED-MEDIATYPE" data1="application/json"/>
+        </match-method>
+
+        <!-- throw 405 -->
+        <error code="GROVE-METHOD-NOT-ALLOWED" data1="POST"/>
+      </match-path>
+
+      <!-- /api/auth/logout -->
+      <match-path matches="^/api/auth/logout$">
+
+        <!-- only allow POST -->
+        <match-method any-of="POST">
+          <dispatch>/endpoints/auth/post-logout.sjs</dispatch>
+        </match-method>
+
+        <!-- throw 405 -->
+        <error code="GROVE-METHOD-NOT-ALLOWED" data1="POST"/>
+      </match-path>
+
+      <!-- /api/auth/profile -->
+      <match-path matches="^/api/auth/profile$">
+
+        <!-- only allow GET or POST -->
+        <match-method any-of="GET">
+
+          <!-- client must accept JSON -->
+          <match-accept any-of="application/json application/* */*">
+            <!-- not authenticated -->
+            <match-user default-user="true">
+              <error code="GROVE-UNAUTHORIZED"/>
+            </match-user>
+
+            <!-- authenticated -->
+            <match-path>
+              <dispatch>/endpoints/auth/get-profile.sjs</dispatch>
+            </match-path>
+
+            <!-- should not be reached! throw 500 -->
+            <error code="GROVE-UNREACHABLE"/>
+          </match-accept>
+
+          <!-- throw 406 -->
+          <error code="GROVE-NOT-ACCEPTABLE" data1="application/json" data2="application/*" data3="*/*"/>
+        </match-method>
+
+        <match-method any-of="POST">
+
+          <!-- client must send JSON -->
+          <match-content-type any-of="application/json">
+            <!-- not authenticated -->
+            <match-user default-user="true">
+              <error code="GROVE-UNAUTHORIZED"/>
+            </match-user>
+
+            <!-- authenticated -->
+            <match-path>
+              <dispatch>/endpoints/auth/post-profile.sjs</dispatch>
+            </match-path>
+
+            <!-- should not be reached! throw 500 -->
+            <error code="GROVE-UNREACHABLE"/>
+          </match-content-type>
+
+          <!-- throw 415 -->
+          <error code="GROVE-UNSUPPORTED-MEDIATYPE" data1="application/json"/>
+        </match-method>
+
+        <!-- throw 405 -->
+        <error code="GROVE-METHOD-NOT-ALLOWED" data1="GET" data2="POST"/>
+
+      </match-path>
+
+      <!-- fall through to 404 -->
+
+    </match-path>
+
+    <!-- Search -->
+    <match-path prefix="/api/search">
+        <dispatch>/endpoints/hello.xqy</dispatch>
+    </match-path>
+
+    <!-- CRUD -->
+    <match-path prefix="/api/crud">
+        <dispatch>/endpoints/hello.xqy</dispatch>
+    </match-path>
+
+    <!-- throw 404 if none of the above matches -->
+    <error code="GROVE-ENDPOINT-NOT-FOUND"/>
+  </match-path>
+
+  <!-- fall through, assume static resource -->
+
+</rewriter>
