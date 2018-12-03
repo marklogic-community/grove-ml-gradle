@@ -8,7 +8,7 @@
 
 plugins {
   id "net.saliman.properties" version "1.4.6"
-  id "com.marklogic.ml-gradle" version "3.7.1"
+  id "com.marklogic.ml-gradle" version "3.10.1"
 }
 
 repositories {
@@ -25,22 +25,19 @@ configurations {
 }
 
 dependencies {
-  mlcp "com.marklogic:mlcp:9.0.5"
-
-  /**
-   * If you need to import delimited text, be sure to include this dependency as well.
-   */
-  mlcp "org.apache.commons:commons-csv:1.2"
+  mlcp "com.marklogic:mlcp:9.0.7"
 
   /**
    * mlcp uses Log4j for logging, and if Log4j can't find a configuration file, it will complain and you'll
    * get none of mlcp's usually-useful logging. It is recommended then that your Gradle configuration for
    * mlcp include a directory or some other resource that provides a log4j.properties file.
    */
-  mlcp files("mlcp/conf")
   mlcp files("mlcp/lib")
 }
 
+/**
+ * Extra tasks necessary to ensure proper Grove access to necessary schemas and modules.
+*/
 task setSchemasPermissions(type: com.marklogic.gradle.task.ServerEvalTask) {
   doFirst {
     println "Changing permissions in " + mlAppConfig.schemasDatabaseName + " for:"
@@ -73,6 +70,10 @@ task mlLoadContent(type: com.marklogic.gradle.task.MlcpTask) {
 
 mlDeploy.finalizedBy mlLoadContent
 
+/** 
+ * Use MlcpTask to load sample people data to support Grove.  Each document
+ * represents a ficitious person.
+*/
 task loadSampleData(type: com.marklogic.gradle.task.MlcpTask) {
   systemProperty "java.library.path", "mlcp/lib/native"
   classpath = configurations.mlcp
