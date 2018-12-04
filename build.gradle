@@ -32,6 +32,7 @@ dependencies {
    * get none of mlcp's usually-useful logging. It is recommended then that your Gradle configuration for
    * mlcp include a directory or some other resource that provides a log4j.properties file.
    */
+  mlcp files("mlcp/conf")
   mlcp files("mlcp/lib")
 }
 
@@ -72,7 +73,7 @@ mlDeploy.finalizedBy mlLoadContent
 
 /** 
  * Use MlcpTask to load sample people data to support Grove.  Each document
- * represents a ficitious person.
+ * represents a fictitious person.
 */
 task loadSampleData(type: com.marklogic.gradle.task.MlcpTask) {
   systemProperty "java.library.path", "mlcp/lib/native"
