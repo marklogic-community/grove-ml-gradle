@@ -44,7 +44,10 @@ function ext:post(
             $collection-q,
             cts:similar-query(doc($uri))
           ))
-        )
+        ) ! object-node{
+          "id": fn:encode-for-uri(.),
+          "uri": .
+        }
       )
     else json:array()
   let $response := json:object()
