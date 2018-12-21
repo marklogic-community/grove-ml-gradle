@@ -2,7 +2,7 @@
 
 var error;
 
-console.log(error);
+//console.log(error);
 
 const resp = xdmp.getResponseCode().toArray();
 var status = resp[0];
@@ -19,7 +19,8 @@ var statusses = {
   },
   'GROVE-UNAUTHORIZED': {
     code: 401,
-    text: 'Unauthorized'
+    text: 'Unauthorized',
+    message: 'Unauthorized: $user'
   },
   'GROVE-INVALID-CREDS': {
     code: 401,
@@ -35,6 +36,11 @@ var statusses = {
     text: 'Not Found',
     message: 'API endpoint not found'
   },
+  'GROVE-DOC-NOT-FOUND': {
+    code: 404,
+    text: 'Not Found',
+    message: 'Resource not found'
+  },
   'GROVE-METHOD-NOT-ALLOWED': {
     code: 405,
     text: 'Method Not Allowed',
@@ -47,6 +53,11 @@ var statusses = {
     headers: {
       allow: '$data'
     }
+  },
+  'GROVE-DOC-EXISTS': {
+    code: 409,
+    text: 'Conflict',
+    message: 'Resource already exists'
   },
   'GROVE-UNSUPPORTED-MEDIATYPE': {
     code: 415,
@@ -66,6 +77,7 @@ if (error && error.code && statusses[error.code]) {
   text = stat.text || text;
   message = stat.message || text;
   message = message.replace('$data', error.data.join(', '))
+  message = message.replace('$user', xdmp.getCurrentUser() || 'default-user')
   headers = stat.headers || {};
   Object.keys(headers).forEach(key => {
     if (headers[key] === '$data') {

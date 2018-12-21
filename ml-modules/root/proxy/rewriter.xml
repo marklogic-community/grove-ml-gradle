@@ -33,7 +33,7 @@
         <match-method any-of="GET">
 
           <!-- client must accept JSON -->
-          <match-accept any-of="application/json application/* */*">
+          <match-accept any-of="application/json */json application/* */*">
 
             <!-- not authenticated -->
             <match-user default-user="true">
@@ -52,7 +52,7 @@
           </match-accept>
 
           <!-- throw 406 -->
-          <error code="GROVE-NOT-ACCEPTABLE" data1="application/json" data2="application/*" data3="*/*"/>
+          <error code="GROVE-NOT-ACCEPTABLE" data1="application/json" data2="*/json" data3="application/*" data4="*/*"/>
         </match-method>
 
         <!-- throw 405 -->
@@ -69,12 +69,12 @@
           <match-content-type any-of="application/json">
 
             <!-- client must accept JSON -->
-            <match-accept any-of="application/json application/* */*">
+            <match-accept any-of="application/json */json application/* */*">
               <dispatch>/endpoints/auth/post-login.sjs</dispatch>
             </match-accept>
 
             <!-- throw 406 -->
-            <error code="GROVE-NOT-ACCEPTABLE" data1="application/json" data2="application/*" data3="*/*"/>
+            <error code="GROVE-NOT-ACCEPTABLE" data1="application/json" data2="*/json" data3="application/*" data4="*/*"/>
           </match-content-type>
 
           <!-- throw 415 -->
@@ -104,7 +104,7 @@
         <match-method any-of="GET">
 
           <!-- client must accept JSON -->
-          <match-accept any-of="application/json application/* */*">
+          <match-accept any-of="application/json */json application/* */*">
             <!-- not authenticated -->
             <match-user default-user="true">
               <error code="GROVE-UNAUTHORIZED"/>
@@ -120,7 +120,7 @@
           </match-accept>
 
           <!-- throw 406 -->
-          <error code="GROVE-NOT-ACCEPTABLE" data1="application/json" data2="application/*" data3="*/*"/>
+          <error code="GROVE-NOT-ACCEPTABLE" data1="application/json" data2="*/json" data3="application/*" data4="*/*"/>
         </match-method>
 
         <match-method any-of="POST">
@@ -161,7 +161,32 @@
 
     <!-- CRUD -->
     <match-path prefix="/api/crud">
-        <dispatch>/endpoints/hello.xqy</dispatch>
+      <!-- not authenticated -->
+      <match-user default-user="true">
+        <error code="GROVE-UNAUTHORIZED"/>
+      </match-user>
+
+      <!-- authenticated, type 'all' -->
+      <match-path prefix="/api/crud/all/">
+        <match-method any-of="GET">
+          <dispatch>/endpoints/crud/get-all.sjs</dispatch>
+        </match-method>
+
+        <match-method any-of="PUT">
+          <dispatch>/endpoints/crud/put-all.sjs</dispatch>
+        </match-method>
+
+        <match-method any-of="POST">
+          <dispatch>/endpoints/crud/post-all.sjs</dispatch>
+        </match-method>
+
+        <match-method any-of="DELETE">
+          <dispatch>/endpoints/crud/delete-all.sjs</dispatch>
+        </match-method>
+
+        <!-- throw 405 -->
+        <error code="GROVE-METHOD-NOT-ALLOWED" data1="GET" data2="POST"/>
+      </match-path>
     </match-path>
 
     <!-- throw 404 if none of the above matches -->
