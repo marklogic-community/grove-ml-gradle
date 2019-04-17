@@ -57,3 +57,31 @@ ml-gradle.
 Or on Windows:
 
     gradlew.bat loadSampleData
+
+## Offline Deployment
+
+1. Create standalone deployer zip
+
+        ./gradlew makeOfflineZip
+
+    Or on Windows:
+
+        gradlew.bat makeOfflineZip
+        
+    *If need to customize the name of the zip file and the gradle instance, specify `projectZipFilename` and `gradle.user.home` accordingly.*
+    
+        ./gradlew -PprojectZipFilename=myapp.zip -Dgradle.user.home=build/gradle-home makeOfflineZip
+    
+    Or on Windows:
+    
+        gradlew.bat -PprojectZipFilename=myapp.zip -Dgradle.user.home=build/gradle-home makeOfflineZip
+    
+2. Copy zip (build/distributions/offline.zip) to desired location / server and unzip
+
+3. Run disconnected tasks from unzip location
+
+        ./gradlew mlDeploy -Pdisconnected=true
+    
+    Or on Windows:
+
+        gradlew.bat mlDeploy -Pdisconnected=true
