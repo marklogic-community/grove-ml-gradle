@@ -9,7 +9,7 @@
 plugins {
   //id 'java' //remove/add as needed
   id "net.saliman.properties" version "1.4.6"
-  id "com.marklogic.ml-gradle" version "3.10.1"
+  id "com.marklogic.ml-gradle" version "3.13.0"
 }
 
 repositories {
@@ -20,6 +20,7 @@ repositories {
   } else {
     println "Using online repositories"
     jcenter()
+    mavenCentral()
     maven { url "http://developer.marklogic.com/maven2/" }
   }
 }
@@ -36,6 +37,7 @@ dependencies {
   //compile 'com.marklogic:marklogic-xcc:9.0.7' //remove/add as needed
   mlcp "com.marklogic:mlcp:9.0.9"
 
+  mlcp "org.apache.commons:commons-csv:1.6"
   /**
    * mlcp uses Log4j for logging, and if Log4j can't find a configuration file, it will complain and you'll
    * get none of mlcp's usually-useful logging. It is recommended then that your Gradle configuration for
@@ -80,11 +82,11 @@ task downloadToProjectMavenRepo(type: Copy) {
 
 task makeOfflineZip(type: Zip, dependsOn: downloadToProjectMavenRepo) {
   from rootDir
-  excludes = ['.tmp', '.gradle', 'build/gradle-home', 'build/distributions', 'build/offline/gradle/wrapper/dists']
-  destinationDir(file('build/distributions'))
+  excludes = ['.tmp', '.gradle', projectGradleHome, projectZipDirectory, 'build/offline/gradle/wrapper/dists']
+  destinationDir(file(projectZipDirectory))
   archiveName = projectZipFilename
   doLast {
-    println "Created offline project zip at build/distributions/offline.zip"
+    println "Created offline project zip at ${projectZipDirectory}/${projectZipFilename}"
   }
 }
 
