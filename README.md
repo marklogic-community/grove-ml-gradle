@@ -68,20 +68,20 @@ Or on Windows:
 
         gradlew.bat makeOfflineZip
         
-    *If need to customize the name of the zip file and the gradle instance, specify `projectZipDirectory`, `projectZipFilename` and `gradle.user.home` accordingly.*
+    *If need to customize the name of the zip file and the gradle instance, specify `projectZipDirectory`, `projectBaseZipFilename` and `gradle.user.home` accordingly.*
     
-        ./gradlew -PprojectZipDirectory=build/package -PprojectZipFilename=myapp.zip -Dgradle.user.home=build/gradle-home makeOfflineZip
+        ./gradlew -PprojectZipDirectory=build/package -PprojectBaseZipFilename=myapp -Dgradle.user.home=build/gradle-home makeOfflineZip
     
     Or on Windows:
     
-        gradlew.bat -PprojectZipDirectory=build/package -PprojectZipFilename=myapp.zip -Dgradle.user.home=build/gradle-home makeOfflineZip
+        gradlew.bat -PprojectZipDirectory=build/package -PprojectBaseZipFilename=myapp -Dgradle.user.home=build/gradle-home makeOfflineZip
     
 2. Copy zip (from ${projectZipDirectory}/${projectZipFilename} with default at build/distributions/offline.zip) to desired location / server and unzip
 
-3. Run disconnected tasks from unzip location
+3. Run offline tasks from unzip location
 
-        ./gradlew mlDeploy -Pdisconnected=true
+        ./gradlew --offline mlDeploy
     
     Or on Windows:
 
-        gradlew.bat mlDeploy -Pdisconnected=true
+        gradlew.bat --offline mlDeploy

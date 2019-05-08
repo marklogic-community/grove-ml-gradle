@@ -13,8 +13,8 @@ plugins {
 }
 
 repositories {
-  // To use gradle in disconnected mode, you just need to set the 'disconnected' property. E.g. gradle compileJava -Pdisconnected
-  if (project.hasProperty("disconnected") && !"FALSE".equalsIgnoreCase(disconnected)) {
+  // To use gradle in offline mode, you just need to add the --offline option. E.g. gradle --offline mlDeploy
+  if (project.getGradle().startParameter.isOffline()) {
     println "Using offline repositories"
     maven { url uri(projectMavenRepo) }
   } else {
@@ -79,6 +79,8 @@ task downloadToProjectMavenRepo(type: Copy) {
   }
   includeEmptyDirs false
 }
+
+def projectZipFilename = projectBaseZipFilename + '-' + new Date().format('yyyyMMddHHmmss') + '.zip'
 
 task makeOfflineZip(type: Zip, dependsOn: downloadToProjectMavenRepo) {
   from rootDir
