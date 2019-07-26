@@ -1,6 +1,6 @@
 {
   "name": "@marklogic-community/grove-ml-gradle",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "description": "Gradle plugin to support automating MarkLogic tasks for Grove",
   "repository": {
     "type": "git",
@@ -17,8 +17,8 @@
   "homepage": "https://github.com/marklogic-community/grove-ml-gradle#readme",
   "contributors": [
     {
-      "name": "Patrick McElwee",
-      "url": "https://github.com/patrickmcelwee"
+      "name": "Matt Pileggi",
+      "url": "https://github.com/withjam"
     },
     {
       "name": "Marianne Myers",
