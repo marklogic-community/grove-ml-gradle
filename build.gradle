@@ -7,13 +7,22 @@
  */
 
 plugins {
+  //id 'java' //remove/add as needed
   id "net.saliman.properties" version "1.4.6"
-  id "com.marklogic.ml-gradle" version "3.10.1"
+  id "com.marklogic.ml-gradle" version "3.13.0"
 }
 
 repositories {
-  jcenter()
-  maven { url "http://developer.marklogic.com/maven2/" }
+  // To use gradle in offline mode, you just need to add the --offline option. E.g. gradle --offline mlDeploy
+  if (project.getGradle().startParameter.isOffline()) {
+    println "Using offline repositories"
+    maven { url uri(projectMavenRepo) }
+  } else {
+    println "Using online repositories"
+    jcenter()
+    mavenCentral()
+    maven { url "http://developer.marklogic.com/maven2/" }
+  }
 }
 
 configurations {
@@ -25,8 +34,10 @@ configurations {
 }
 
 dependencies {
-  mlcp "com.marklogic:mlcp:9.0.7"
+  //compile 'com.marklogic:marklogic-xcc:9.0.7' //remove/add as needed
+  mlcp "com.marklogic:mlcp:9.0.9"
 
+  mlcp "org.apache.commons:commons-csv:1.6"
   /**
    * mlcp uses Log4j for logging, and if Log4j can't find a configuration file, it will complain and you'll
    * get none of mlcp's usually-useful logging. It is recommended then that your Gradle configuration for
@@ -34,6 +45,51 @@ dependencies {
    */
   mlcp files("mlcp/conf")
   mlcp files("mlcp/lib")
+}
+
+/**
+ * START: Disconnected gradle tasks
+ * Reference: https://github.com/derms/ml-gradle/blob/dev/examples/disconnected-project-using-plugins-and-gradlew/build.gradle
+ */
+gradle.taskGraph.whenReady { graph ->
+  if (graph.hasTask(downloadToProjectMavenRepo)) {
+    println project.gradle.gradleUserHomeDir
+    if (!project.gradle.gradleUserHomeDir.equals(new File(rootDir, projectGradleHome))) {
+      throw new GradleException("Please set the gradle user home property to $projectGradleHome on the gradle command line - e.g. \n " +
+              (System.getProperty("os.name").startsWith("Windows") ? "" : "./") +
+              "gradlew -Dgradle.user.home=$projectGradleHome <task_to_execute>")
+    }
+  }
+}
+
+task downloadToProjectMavenRepo(type: Copy) {
+  /*
+   * Include any configuration dependencies here that you want to copy the dependencies for.
+   * These are defined in the 'dependencies' block. E.g. you need to include
+   * configurations.compile.files if you want your java 'compile' dependencies downloaded
+   */
+  //configurations.compile.files //includes 'java' compile dependencies. Remove/add as needed
+  configurations.mlcp.files //includes 'mlcp' dependencies. Remove if not needed
+
+  from new File(gradle.gradleUserHomeDir, 'caches/modules-2/files-2.1') // correct as of gradle 4.7
+  into new File(rootDir, projectMavenRepo)
+  eachFile {
+    List<String> parts = it.path.split('/')
+    it.path = (parts[0].replace('.', '/') + '/' + parts[1]) + '/' + parts[2] + '/' + parts[4]
+  }
+  includeEmptyDirs false
+}
+
+def projectZipFilename = projectBaseZipFilename + '-' + new Date().format('yyyyMMddHHmmss') + '.zip'
+
+task makeOfflineZip(type: Zip, dependsOn: downloadToProjectMavenRepo) {
+  from rootDir
+  excludes = ['.tmp', '.gradle', projectGradleHome, projectZipDirectory, 'build/offline/gradle/wrapper/dists']
+  destinationDir(file(projectZipDirectory))
+  archiveName = projectZipFilename
+  doLast {
+    println "Created offline project zip at ${projectZipDirectory}/${projectZipFilename}"
+  }
 }
 
 /**
@@ -71,7 +127,7 @@ task mlLoadContent(type: com.marklogic.gradle.task.MlcpTask) {
 
 mlDeploy.finalizedBy mlLoadContent
 
-/** 
+/**
  * Use MlcpTask to load sample people data to support Grove.  Each document
  * represents a fictitious person.
 */
