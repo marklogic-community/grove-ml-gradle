@@ -2,9 +2,11 @@
 
 var error;
 
-//console.log(error);
-
 const resp = xdmp.getResponseCode().toArray();
+
+//console.log(error);
+//console.log(resp);
+
 var status = resp[0];
 var text = resp[1];
 var message = resp[1];
@@ -93,6 +95,7 @@ var response = {
   url: url
 };
 
+xdmp.log(response);
 xdmp.setResponseCode(status, text);
 xdmp.setResponseContentType('application/json');
 Object.keys(headers).forEach(key => {

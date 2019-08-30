@@ -12,7 +12,7 @@
   "content-database": "%%mlAppName%%-content",
   "modules-database": "%%mlAppName%%-modules",
 
-  "default-user": "%%mlAppName%%-user",
+  "default-user": "%%mlAppName%%-nobody",
   "log-errors": true,
   "default-error-format": "compatible"
 }

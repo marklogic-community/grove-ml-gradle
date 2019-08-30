@@ -156,7 +156,33 @@
 
     <!-- Search -->
     <match-path prefix="/api/search">
-        <dispatch>/endpoints/hello.xqy</dispatch>
+      <!-- not authenticated -->
+      <match-user default-user="true">
+        <error code="GROVE-UNAUTHORIZED"/>
+      </match-user>
+
+      <!-- authenticated, type 'all' -->
+      <match-path prefix="/api/search/all/">
+
+        <match-path prefix="/api/search/all/results">
+          <match-method any-of="POST">
+            <dispatch>/endpoints/search/post-all-results.sjs</dispatch>
+          </match-method>
+        </match-path>
+
+        <match-path prefix="/api/search/all/facets">
+          <match-method any-of="POST">
+            <dispatch>/endpoints/search/post-all-facets.sjs</dispatch>
+          </match-method>
+        </match-path>
+
+        <match-method any-of="POST">
+          <dispatch>/endpoints/search/post-all.sjs</dispatch>
+        </match-method>
+
+        <!-- throw 405 -->
+        <error code="GROVE-METHOD-NOT-ALLOWED" data1="POST"/>
+      </match-path>
     </match-path>
 
     <!-- CRUD -->
