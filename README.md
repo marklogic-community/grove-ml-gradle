@@ -20,11 +20,13 @@ Also used, but downloaded and installed automatically:
 On Mac or Linux:
 
     ./gradlew mlDeploy
+    ./gradlew mlReloadSchemas
     ./gradlew loadSampleData
 
 On Windows:
 
     gradlew.bat mlDeploy
+    gradlew.bat mlReloadSchemas
     gradlew.bat loadSampleData
 
 ## Setting up the target enviroment
@@ -44,6 +46,23 @@ roles for you, and deploy the back-end application code.
 Or on Windows:
 
     gradlew.bat mlDeploy -PenvironmentName=[local|dev|prod]
+
+After loading the data, you can use SQL query to query the sample data in QConsole using a SQL Query such as:
+
+    SELECT * from people
+
+## Loading Schema for Template Driven Extraction (TDE) (optional)
+
+If you want to use Template Driven Extraction with the sample data (for use with SQL, for example),
+there is a sample TDE templae in src/main/ml-schemas/tde/people.json. 
+
+To load the TDE template, execute:
+
+    ./gradlew mlReloadSchemas
+
+Or on Windows:
+
+    gradlew.bat mlReloadSchemas
 
 ## Loading Sample Data (optional)
 
