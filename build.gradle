@@ -36,6 +36,15 @@ dependencies {
   mlcp files("mlcp/lib")
 }
 
+ext {
+  // Dynamically read package.json to pull up a name and version for ping response.
+  // Alternatively, you can hard-code these properties in gradle properties, and comment out the following.
+  def pkgFile = file('package.json')
+  def pkg = new groovy.json.JsonSlurper().parseText(pkgFile.text)
+  mlAppConfig.customTokens.put("%%mlPingName%%", pkg.name)
+  mlAppConfig.customTokens.put("%%mlPingVersion%%", pkg.version)
+}
+
 /**
  * Extra tasks necessary to ensure proper Grove access to necessary schemas and modules.
 */
