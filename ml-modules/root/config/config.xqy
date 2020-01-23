@@ -19,4 +19,5 @@ module namespace c = "http://marklogic.com/roxy/application-config";
 
 (: configured at deploy time by ml-gradle deployer :)
 declare variable $c:app-name := "%%mlAppName%%";
-
+declare variable $c:ping-name := "%%mlPingName%%";
+declare variable $c:ping-version := "%%mlPingVersion%%";
