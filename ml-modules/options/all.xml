@@ -36,7 +36,8 @@
     <score/>
   </sort-order>
 
-  <!-- Not used, but the default snippeting behavior if no state (see compact/detailed below) was specified -->
+  <!-- The default snippeting behavior if no state (see compact/detailed below) was specified -->
+  <!-- GENERAL NOTE: be careful, snippeting can be slow for large documents ( > 1 Mb ) -->
   <transform-results apply="snippet">
     <preferred-matches>
       <element ns="http://marklogic.com/entity-services" name="instance"/>
@@ -184,6 +185,7 @@
        config options used in middle-tier/routes/api/index.js -->
   <extract-document-data selected="include">
     <extract-path>/name</extract-path>
+    <!-- NOTE: be carefull, instance bodies *could* be large, though it depends on your entity model -->
     <extract-path>/*:envelope/*:instance/node()</extract-path>
   </extract-document-data>
 
