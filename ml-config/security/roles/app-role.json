@@ -24,5 +24,9 @@
     "privilege-name": "rest-writer",
     "action": "http://marklogic.com/xdmp/privileges/rest-writer",
     "kind": "execute"
+  }, {
+    "privilege-name": "xdmp:add-response-header",
+    "action": "http://marklogic.com/xdmp/privileges/xdmp-add-response-header",
+    "kind": "execute"
   }]
 }

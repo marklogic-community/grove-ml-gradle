@@ -1,0 +1,18 @@
+{
+  "server-name": "%%mlAppName%%-proxy",
+  "port": "%%mlProxyPort%%",
+  "authentication": "application-level",
+  "root": "/proxy/",
+  "url-rewriter": "/rewriter.xml",
+  "rewrite-resolves-globally": false,
+  "error-handler": "/errorHandler.sjs",
+
+  "group-name": "%%mlGroup%%",
+  "server-type": "http",
+  "content-database": "%%mlAppName%%-content",
+  "modules-database": "%%mlAppName%%-modules",
+
+  "default-user": "%%mlAppName%%-nobody",
+  "log-errors": true,
+  "default-error-format": "compatible"
+}
