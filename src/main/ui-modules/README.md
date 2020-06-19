@@ -1,4 +1,4 @@
-The ml-modules directory contains all of the modules for an application. Its structure is based on that of the
+This directory contains all of the modules for an application. Its structure is based on that of the
 [MarkLogic samplestack reference application](https://github.com/marklogic/marklogic-samplestack/tree/master/database):
 
 - /ext contains libraries and other application assets; these map to the /v1/ext endpoint in the Client API, though

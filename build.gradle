@@ -8,12 +8,12 @@
 
 plugins {
   id "net.saliman.properties" version "1.5.1"
-  id "com.marklogic.ml-gradle" version "3.17.0"
+  id "com.marklogic.ml-gradle" version "4.0.3"
 }
 
 repositories {
   jcenter()
-  maven { url "http://developer.marklogic.com/maven2/" }
+  maven { url "https://developer.marklogic.com/maven2/" }
 }
 
 configurations {
@@ -25,7 +25,7 @@ configurations {
 }
 
 dependencies {
-  mlcp "com.marklogic:mlcp:10.0.3"
+  mlcp "com.marklogic:mlcp:10.0.4"
 
   /**
    * mlcp uses Log4j for logging, and if Log4j can't find a configuration file, it will complain and you'll
@@ -45,40 +45,6 @@ ext {
   mlAppConfig.customTokens.put("%%mlPingVersion%%", pkg.version)
 }
 
-/**
- * Extra tasks necessary to ensure proper Grove access to necessary schemas and modules.
-*/
-task setSchemasPermissions(type: com.marklogic.gradle.task.ServerEvalTask) {
-  doFirst {
-    println "Changing permissions in " + mlAppConfig.schemasDatabaseName + " for:"
-  }
-  xquery = "xdmp:invoke('/admin/fix-permissions.xqy', (), map:entry('database', xdmp:database('" + mlAppConfig.schemasDatabaseName + "')))"
-}
-
-task setModulesPermissions(type: com.marklogic.gradle.task.ServerEvalTask) {
-  doFirst {
-    println "Changing permissions in " + mlAppConfig.modulesDatabaseName + " for:"
-  }
-  xquery = "xdmp:invoke('/admin/fix-permissions.xqy', (), map:entry('database', xdmp:database('" + mlAppConfig.modulesDatabaseName + "')))"
-}
-
-mlLoadSchemas.finalizedBy setSchemasPermissions
-mlLoadModules.finalizedBy setModulesPermissions
-mlDeploy.finalizedBy setSchemasPermissions
-mlDeploy.finalizedBy setModulesPermissions
-
-task mlLoadContent(type: com.marklogic.gradle.task.MlcpTask) {
-  systemProperty "java.library.path", "mlcp/lib/native"
-  classpath = configurations.mlcp
-  command = "IMPORT"
-  port = mlAppConfig.restPort
-  input_file_path = "ml-content/"
-  output_collections = "config"
-  output_permissions = mlAppConfig.name + "-role,read," + mlAppConfig.name + "-role,update"
-  output_uri_replace = ".*ml-content/,'/'"
-}
-
-mlDeploy.finalizedBy mlLoadContent
 
 /**
  * Use MlcpTask to load sample people data to support Grove.  Each document
@@ -95,4 +61,3 @@ task loadSampleData(type: com.marklogic.gradle.task.MlcpTask) {
   output_permissions = mlAppConfig.name + "-role,read," + mlAppConfig.name + "-role,update"
   output_uri_replace = ".*.zip,''"
 }
-
