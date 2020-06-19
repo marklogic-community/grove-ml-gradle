@@ -61,3 +61,31 @@ task loadSampleData(type: com.marklogic.gradle.task.MlcpTask) {
   output_permissions = mlAppConfig.name + "-role,read," + mlAppConfig.name + "-role,update"
   output_uri_replace = ".*.zip,''"
 }
+
+/**
+ * Sample export and import mlcp tasks.  The export provides a date on the output_file_path
+ * to ensure a new directory is always available.  mlcp will fail if trying to write to a directory
+ * that already
+ *
+*/
+task exportContent(type: com.marklogic.gradle.task.MlcpTask) {
+  systemProperty "java.library.path", "mlcp/lib/native"
+  classpath = configurations.mlcp
+  command = "EXPORT"
+  port = mlAppConfig.restPort
+  output_file_path = "export/" + getDate()
+  output_type = "archive"
+}
+
+task importContent(type: com.marklogic.gradle.task.MlcpTask) {
+  systemProperty "java.library.path", "mlcp/lib/native"
+  classpath = configurations.mlcp
+  command = "IMPORT"
+  port = mlAppConfig.restPort
+  input_file_path = "export/"
+  input_file_type = "archive"
+}
+
+def getDate() {
+  return new Date().format('yyyyMMdd-HHmmss')
+}
