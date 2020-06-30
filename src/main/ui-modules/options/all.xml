@@ -40,7 +40,6 @@
   <transform-results apply="snippet">
     <preferred-matches>
       <element ns="http://marklogic.com/entity-services" name="instance"/>
-      <json-property>instance</json-property>
     </preferred-matches>
     <max-matches>1</max-matches>
     <max-snippet-chars>150</max-snippet-chars>
