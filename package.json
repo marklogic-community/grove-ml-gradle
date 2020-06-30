@@ -1,6 +1,6 @@
 {
   "name": "@marklogic-community/grove-ml-gradle",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Gradle plugin to support automating MarkLogic tasks for Grove",
   "repository": {
     "type": "git",
