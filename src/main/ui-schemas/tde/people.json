@@ -1,0 +1,121 @@
+{
+    "template": {
+      "context": "/",
+      "collections": ["data"],
+      "rows": [
+        {
+          "schemaName": "sample",
+          "viewName": "people",
+          "columns": [
+              {
+              "name": "_id", 
+              "scalarType": "string", 
+              "val": "_id"
+              }, 
+              {
+              "name": "about", 
+              "scalarType": "string", 
+              "val": "about",
+              "nullable": true
+              },
+              {
+              "name": "address", 
+              "scalarType": "string", 
+              "val": "address",
+              "nullable": true
+              },
+              {
+              "name": "age", 
+              "scalarType": "integer", 
+              "val": "age",
+              "nullable": true
+              },
+              {
+              "name": "balance", 
+              "scalarType": "string", 
+              "val": "balance",
+              "nullable": true
+              },
+              {
+              "name": "company", 
+              "scalarType": "string", 
+              "val": "company",
+              "nullable": true
+              },
+              {
+              "name": "docFormat", 
+              "scalarType": "string", 
+              "val": "docFormat",
+              "nullable": true
+              },
+              {
+              "name": "email", 
+              "scalarType": "string", 
+              "val": "email",
+              "nullable": true
+              },
+              {
+              "name": "eyeColor", 
+              "scalarType": "string", 
+              "val": "eyeColor",
+              "nullable": true
+              },
+              {
+              "name": "favoriteFruit", 
+              "scalarType": "string", 
+              "val": "favoriteFruit",
+              "nullable": true
+              },
+              {
+              "name": "gender", 
+              "scalarType": "string", 
+              "val": "gender",
+              "nullable": true
+              },
+              {
+              "name": "greeting", 
+              "scalarType": "string", 
+              "val": "greeting",
+              "nullable": true
+              },
+              {
+              "name": "guid", 
+              "scalarType": "string", 
+              "val": "guid",
+              "nullable": true
+              },
+              {
+              "name": "isActive", 
+              "scalarType": "boolean", 
+              "val": "isActive",
+              "nullable": true
+              },
+              {
+              "name": "name", 
+              "scalarType": "string", 
+              "val": "name",
+              "nullable": true
+              },
+              {
+              "name": "phone", 
+              "scalarType": "string", 
+              "val": "phone",
+              "nullable": true
+              },
+              {
+              "name": "picture", 
+              "scalarType": "string", 
+              "val": "picture",
+              "nullable": true
+              },
+              {
+              "name": "registered", 
+              "scalarType": "dateTime", 
+              "val": "registered",
+              "nullable": true
+              }
+            ]
+        }
+      ]
+    }
+  }

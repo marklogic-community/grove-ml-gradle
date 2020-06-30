@@ -6,6 +6,12 @@
   <additional-query>
     <cts:collection-query xmlns:cts="http://marklogic.com/cts">
       <cts:uri>data</cts:uri>
+      <!-- NOTE: limit on entity collections instead for DHF/DHS: -->
+      <!--
+      <cts:uri>Entity1</cts:uri>
+      <cts:uri>Entity2</cts:uri>
+      ...
+      -->
     </cts:collection-query>
   </additional-query>
 
@@ -18,31 +24,12 @@
       See Usage Notes of http://docs.marklogic.com/cts:word-query for details.
       Also note that forcing stemmed searches will disable wildcarded searches.
     -->
+    <!-- NOTE: You may need to enable features for DHF/DHS final database to use features like stemming and wildcards -->
     <!--
     <term-option>punctuation-insensitive</term-option>
     <term-option>stemmed</term-option>
     -->
   </term>
-
-  <!-- Default grammer -->
-  <grammar>
-    <quotation>"</quotation>
-    <implicit>
-      <cts:and-query strength="20" xmlns:cts="http://marklogic.com/cts"/>
-    </implicit>
-    <starter strength="30" apply="grouping" delimiter=")">(</starter>
-    <starter strength="40" apply="prefix" element="cts:not-query">-</starter>
-    <joiner strength="10" apply="infix" element="cts:or-query" tokenize="word">OR</joiner>
-    <joiner strength="20" apply="infix" element="cts:and-query" tokenize="word">AND</joiner>
-    <joiner strength="30" apply="infix" element="cts:near-query" tokenize="word">NEAR</joiner>
-    <joiner strength="30" apply="near2" consume="2" element="cts:near-query">NEAR/</joiner>
-    <joiner strength="50" apply="constraint">:</joiner>
-    <joiner strength="50" apply="constraint" compare="LT" tokenize="word">LT</joiner>
-    <joiner strength="50" apply="constraint" compare="LE" tokenize="word">LE</joiner>
-    <joiner strength="50" apply="constraint" compare="GT" tokenize="word">GT</joiner>
-    <joiner strength="50" apply="constraint" compare="GE" tokenize="word">GE</joiner>
-    <joiner strength="50" apply="constraint" compare="NE" tokenize="word">NE</joiner>
-  </grammar>
 
   <!-- Default sort order. You can also associate states with sort orders to allow switching sort orders -->
   <sort-order direction="descending">
@@ -51,7 +38,9 @@
 
   <!-- Not used, but the default snippeting behavior if no state (see compact/detailed below) was specified -->
   <transform-results apply="snippet">
-    <preferred-elements><element ns="" name="body"/></preferred-elements>
+    <preferred-matches>
+      <element ns="http://marklogic.com/entity-services" name="instance"/>
+    </preferred-matches>
     <max-matches>1</max-matches>
     <max-snippet-chars>150</max-snippet-chars>
     <per-match-tokens>20</per-match-tokens>
@@ -63,7 +52,10 @@
   <operator name="results">
     <state name="compact">
       <transform-results apply="snippet">
-        <preferred-elements><element ns="" name="body"/></preferred-elements>
+        <preferred-matches>
+          <element ns="http://marklogic.com/entity-services" name="instance"/>
+          <json-property>instance</json-property>
+        </preferred-matches>
         <max-matches>1</max-matches>
         <max-snippet-chars>150</max-snippet-chars>
         <per-match-tokens>20</per-match-tokens>
@@ -71,7 +63,10 @@
     </state>
     <state name="detailed">
       <transform-results apply="snippet">
-        <preferred-elements><element ns="" name="body"/></preferred-elements>
+        <preferred-matches>
+          <element ns="http://marklogic.com/entity-services" name="instance"/>
+          <json-property>instance</json-property>
+        </preferred-matches>
         <max-matches>2</max-matches>
         <max-snippet-chars>400</max-snippet-chars>
         <per-match-tokens>30</per-match-tokens>
@@ -85,15 +80,14 @@
         <score/>
       </sort-order>
     </state>
+    <!-- NOTE: comment these sort states out for DHF/DHS, use as example -->
     <state name="eyeColorAsc">
-      <sort-order
-    direction="ascending" type="xs:string" collation="http://marklogic.com/collation/codepoint">
+      <sort-order direction="ascending" type="xs:string" collation="http://marklogic.com/collation/codepoint">
         <path-index>eyeColor</path-index>
       </sort-order>
     </state>
     <state name="eyeColorDsc">
-      <sort-order
-    direction="descending" type="xs:string" collation="http://marklogic.com/collation/codepoint">
+      <sort-order direction="descending" type="xs:string" collation="http://marklogic.com/collation/codepoint">
         <path-index>eyeColor</path-index>
       </sort-order>
     </state>
@@ -110,6 +104,7 @@
   </constraint>
 
   <!-- Example facet based on the sample-data -->
+  <!-- NOTE: comment these facets out for DHF/DHS, use as example -->
   <constraint name="eyeColor">
     <range type="xs:string" facet="true" collation="http://marklogic.com/collation/codepoint">
       <facet-option>limit=5</facet-option>
@@ -135,6 +130,19 @@
       <facet-option>descending</facet-option>
       <path-index>gender</path-index>
     </range>
+  </constraint>
+
+  <!-- custom constraints to support advanced queries -->
+  <constraint name="similar-query">
+    <custom facet="false">
+      <parse apply="parse-structured" ns="http://marklogic.com/similar-query-constraint" at="/search/similar-query-constraint.xqy"/>
+    </custom>
+  </constraint>
+
+  <constraint name="triple-range-query">
+    <custom facet="false">
+      <parse apply="parse-structured" ns="http://marklogic.com/triple-range-query-constraint" at="/search/triple-range-query-constraint.xqy"/>
+    </custom>
   </constraint>
 
   <!-- Example geospatial facet based on the sample-data, used by map theme -->
@@ -175,6 +183,7 @@
        config options used in middle-tier/routes/api/index.js -->
   <extract-document-data selected="include">
     <extract-path>/name</extract-path>
+    <extract-path>/*:envelope/*:instance/node()</extract-path>
   </extract-document-data>
 
 </options>
